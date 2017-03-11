@@ -24,6 +24,7 @@ public:
 		mHead = new node<T>;
 		mHead = head;
 	}
+
 	~LinkedList()
 	{
 		node<T>* current = mHead;
@@ -42,17 +43,12 @@ public:
 		mHead = n;
 	}
 
-	node<T>* pop()
+ 	void pop()
 	{
-		node<T> ret = *mHead;
-		node<T> *del = mHead;
-		mHead = mHead->next;
-
-		del->next = nullptr;
-		del->data = 0;
-		delete del;
-
-		return &ret;
+		node<T> *tmp = mHead->next;
+		delete mHead;
+		mHead = tmp;
+		delete tmp;
 	}
 
 	void append(node<T> *n)
@@ -66,6 +62,7 @@ public:
 	void insert(short index, node<T> *n)
 	{
 		assert(index > 0 && index < this->length());
+
 		short currentIndex = 0;
 		node<T> *current = mHead;
 		node<T> *prev = current;
@@ -103,6 +100,8 @@ public:
 	// overloads
 	node<T>* operator[](int index)
 	{
+		assert(index > 0 && index < this->length());
+
 		int currentIndex = 0;
 		node<T> *current = mHead;
 
