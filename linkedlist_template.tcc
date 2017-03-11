@@ -2,8 +2,7 @@
 #define LINKED_LIST_TCC
 
 #include <iostream>
-using std::cout;
-using std::endl;
+#include <cassert>
 
 template <typename T> struct Node
 {
@@ -66,6 +65,7 @@ public:
 
 	void insert(short index, node<T> *n)
 	{
+		assert(index > 0 && index < this->length());
 		short currentIndex = 0;
 		node<T> *current = mHead;
 		node<T> *prev = current;
@@ -76,8 +76,6 @@ public:
 			++currentIndex;
 		}
 
-		cout << "insert: current->data = " << current->data << endl;
-		cout << "insert: prev->data = " << prev->data << endl;
 		prev->next = n;
 		n->next = current;
 	}
