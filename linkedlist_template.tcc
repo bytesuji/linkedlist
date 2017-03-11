@@ -66,26 +66,20 @@ public:
 
 	void insert(short index, node<T> *n)
 	{
-		/*
-		ll = A(1)->B(2)->C(3)
-		ll.insert(1, D(4))
-
-		attach A(1) to D(4)
-		tmp = A(1)->D(4)
-
-		attach D(4) to B(2)
-		A(1)->D(4)->B(2)->C(3)
-		*/
 		short currentIndex = 0;
 		node<T> *current = mHead;
-		while(currentIndex != index - 1)
+		node<T> *prev = current;
+		while(currentIndex != index)
 		{
+			prev = current;
 			current = current->next;
 			++currentIndex;
 		}
 
-		current->next = n;
-		this->push(n);
+		cout << "insert: current->data = " << current->data << endl;
+		cout << "insert: prev->data = " << prev->data << endl;
+		prev->next = n;
+		n->next = current;
 	}
 
 	// info functions
