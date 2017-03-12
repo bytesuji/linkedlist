@@ -90,7 +90,7 @@ public:
 		return mHead;
 	}
 
-	short length()
+	size_t size()
 	{
 		node<T> *current = mHead;
 		short cnt = 0;
@@ -102,6 +102,11 @@ public:
 		}
 
 		return cnt;
+	}
+
+	size_t length()
+	{
+		return this->size();
 	}
 
 	// overloads
