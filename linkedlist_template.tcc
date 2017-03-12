@@ -10,9 +10,6 @@ template <typename T> struct node
 	node *next = nullptr;
 };
 
-//template <typename T>
-//using node = struct Node<T>;
-
 template <typename T> class LinkedList
 {
 private:
