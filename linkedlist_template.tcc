@@ -4,14 +4,14 @@
 #include <iostream>
 #include <cassert>
 
-template <typename T> struct Node
+template <typename T> struct node
 {
 	T data;
-	struct Node *next = nullptr;
+	node *next = nullptr;
 };
 
-template <typename T>
-using node = struct Node<T>;
+//template <typename T>
+//using node = struct Node<T>;
 
 template <typename T> class LinkedList
 {
@@ -21,7 +21,6 @@ private:
 public:
 	LinkedList(node<T> *head = nullptr)
 	{
-		mHead = new node<T>;
 		mHead = head;
 	}
 
@@ -43,12 +42,20 @@ public:
 		mHead = n;
 	}
 
- 	void pop()
+ 	node<T>* pop()
 	{
-		node<T> *tmp = mHead->next;
+		node<T>* copy = new node<T>();
+		copy->data = mHead->data;
+		copy->next = nullptr;
+
+		node<T> *newHead = mHead->next;
+		mHead->next = nullptr;
+		mHead->data = 0;
 		delete mHead;
-		mHead = tmp;
-		delete tmp;
+
+		mHead = newHead;
+
+		return copy;
 	}
 
 	void append(node<T> *n)
@@ -61,7 +68,7 @@ public:
 
 	void insert(short index, node<T> *n)
 	{
-		assert(index > 0 && index < this->length());
+		assert(index >= 0 && index < this->length());
 
 		short currentIndex = 0;
 		node<T> *current = mHead;
@@ -100,7 +107,7 @@ public:
 	// overloads
 	node<T>* operator[](int index)
 	{
-		assert(index > 0 && index < this->length());
+		assert(index >= 0 && index < this->length());
 
 		int currentIndex = 0;
 		node<T> *current = mHead;
