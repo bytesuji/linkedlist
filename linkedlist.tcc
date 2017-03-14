@@ -17,11 +17,13 @@ class LinkedList
 {
 private:
 	node<T> *mHead;
+	short mSize;
 
 public:
 	LinkedList(node<T> *head = nullptr)
 	{
 		mHead = head;
+		mSize = 0;
 	}
 
 	~LinkedList()
@@ -35,11 +37,29 @@ public:
 		}
 	}
 
+	// overloads
+	node<T>* operator[](int index)
+	{
+		assert(index >= 0 && index < this->size());
+
+		int currentIndex = 0;
+		node<T> *current = mHead;
+
+		while(currentIndex != index)
+		{
+			current = current->next;
+			++currentIndex;
+		}
+
+		return current;
+	}
+
 	// stack manip functions
 	void push(node<T> *n)
 	{
 		n->next = mHead;
 		mHead = n;
+		++mSize;
 	}
 
  	std::unique_ptr<node<T>> pop() // uses unique_ptr to prevent a mem leak
@@ -54,6 +74,7 @@ public:
 		delete mHead;
 
 		mHead = newHead;
+		--mSize;
 
 		return copy;
 	}
@@ -64,6 +85,7 @@ public:
 		while(end->next != nullptr)
 		end = end->next;
 		end->next = n;
+		++mSize;
 	}
 
 	void remove(short index)
@@ -94,6 +116,7 @@ public:
 			current->next = nullptr;
 			delete current;
 		}
+		--mSize;
 	}
 
 	void insert(short index, node<T> *n)
@@ -122,6 +145,7 @@ public:
 			std::cerr << "(!) Warning: index greater than this->size(), appending node.\n";
 			this->append(n);
 		}
+		++mSize;
 	}
 
 	// info functions
@@ -137,30 +161,12 @@ public:
 
 	node<T>* end()
 	{
-		node<T> *current = mHead;
-		node<T> *prev = nullptr;
-
-		while(current != nullptr)
-		{
-			prev = current;
-			current = current->next;
-		}
-
-		return prev;
+		return this[0][mSize - 1];
 	}
 
 	size_t size()
 	{
-		node<T> *current = mHead;
-		short cnt = 0;
-
-		while(current != nullptr)
-		{
-			current = current->next;
-			++cnt;
-		}
-
-		return cnt;
+		return mSize;
 	}
 
 	size_t length()
@@ -168,22 +174,6 @@ public:
 		return this->size();
 	}
 
-	// overloads
-	node<T>* operator[](int index)
-	{
-		assert(index >= 0 && index < this->size());
-
-		int currentIndex = 0;
-		node<T> *current = mHead;
-
-		while(currentIndex != index)
-		{
-			current = current->next;
-			++currentIndex;
-		}
-
-		return current;
-	}
 };
 
 #endif
