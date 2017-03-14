@@ -48,7 +48,7 @@ public:
 		copy->data = mHead->data;
 		copy->next = nullptr;
 
-		node<T> *newHead = mHead->next;
+		node<T> *newHead = mHead->next; // doesn't need to be deleted because no alloc occurs
 		mHead->next = nullptr;
 		mHead->data = 0;
 		delete mHead;
@@ -66,7 +66,7 @@ public:
 		end->next = n;
 	}
 
-	void insert(short index, node<T> *n) // fix this
+	void insert(short index, node<T> *n)
 	{
 		assert(index >= 0);
 
