@@ -3,14 +3,17 @@
 
 #include <iostream>
 #include <cassert>
+#include <memory>
 
-template <typename T> struct node
+template <typename T>
+struct node
 {
 	T data = 0;
 	node *next = nullptr;
 };
 
-template <typename T> class LinkedList
+template <typename T>
+class LinkedList
 {
 private:
 	node<T> *mHead;
@@ -39,9 +42,9 @@ public:
 		mHead = n;
 	}
 
- 	node<T>* pop()
+ 	std::unique_ptr<node<T>> pop() // uses unique_ptr to prevent a mem leak
 	{
-		node<T> *copy = new node<T>();
+		std::unique_ptr<node<T>> copy(new node<T>);
 		copy->data = mHead->data;
 		copy->next = nullptr;
 
@@ -65,11 +68,11 @@ public:
 
 	void insert(short index, node<T> *n) // fix this
 	{
-		assert(index >= 0 && index < this->length());
+		assert(index >= 0);
 
 		if(index == 0)
 			this->push(n);
-		else
+		else if(index > 0 && index < this->length())
 		{
 			short currentIndex = 0;
 			node<T> *current = mHead;
@@ -83,6 +86,11 @@ public:
 
 			prev->next = n;
 			n->next = current;
+		}
+		else
+		{
+			std::cerr << "(!) Warning: index greater than this->size(), appending node.\n";
+			this->append(n);
 		}
 	}
 
@@ -151,6 +159,6 @@ public:
 #endif
 
 /* TODO
-	add end and begin functions
 	full list print function
+	getIndex function
 */
