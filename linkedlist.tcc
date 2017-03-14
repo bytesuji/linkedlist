@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <cassert>
-#include <memory>
 
 template <typename T>
 struct node
@@ -42,20 +41,12 @@ public:
 		mHead = n;
 	}
 
- 	std::unique_ptr<node<T>> pop() // uses unique_ptr to prevent a mem leak
+	node<T>* pop()
 	{
-		std::unique_ptr<node<T>> copy(new node<T>);
-		copy->data = mHead->data;
-		copy->next = nullptr;
+		node<T> *ret = mHead;
+		mHead = mHead->next;
 
-		node<T> *newHead = mHead->next; // doesn't need to be deleted because no alloc occurs
-		mHead->next = nullptr;
-		mHead->data = 0;
-		delete mHead;
-
-		mHead = newHead;
-
-		return copy;
+		return ret;
 	}
 
 	void append(node<T> *n)
