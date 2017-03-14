@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <cassert>
+#include <memory>
 
 template <typename T>
 struct node
@@ -41,12 +42,20 @@ public:
 		mHead = n;
 	}
 
-	node<T>* pop()
+ 	std::unique_ptr<node<T>> pop() // uses unique_ptr to prevent a mem leak
 	{
-		node<T> *ret = mHead;
-		mHead = mHead->next;
+		std::unique_ptr<node<T>> copy(new node<T>);
+		copy->data = mHead->data;
+		copy->next = nullptr;
 
-		return ret;
+		node<T> *newHead = mHead->next; // doesn't need to be deleted because no alloc occurs
+		mHead->next = nullptr;
+		mHead->data = 0;
+		delete mHead;
+
+		mHead = newHead;
+
+		return copy;
 	}
 
 	void append(node<T> *n)
@@ -57,13 +66,43 @@ public:
 		end->next = n;
 	}
 
+	void remove(short index)
+	{
+		assert(index >= 0);
+
+		if(index == 0)
+			this->pop();
+		else
+		{
+			if(index > this->size())
+			{
+				std::cerr << "(!) Warning: index > this->size(), removing last node.\n";
+				index = this->size() - 1;
+			}
+
+			short currentIndex = 0;
+			node<T> *current = mHead;
+			node<T> *prev = current;
+			while(currentIndex != index)
+			{
+				prev = current;
+				current = current->next;
+				++currentIndex;
+			}
+
+			prev->next = current->next;
+			current->next = nullptr;
+			delete current;
+		}
+	}
+
 	void insert(short index, node<T> *n)
 	{
 		assert(index >= 0);
 
 		if(index == 0)
 			this->push(n);
-		else if(index > 0 && index < this->length())
+		else if(index > 0 && index < this->size())
 		{
 			short currentIndex = 0;
 			node<T> *current = mHead;
@@ -132,7 +171,7 @@ public:
 	// overloads
 	node<T>* operator[](int index)
 	{
-		assert(index >= 0 && index < this->length());
+		assert(index >= 0 && index < this->size());
 
 		int currentIndex = 0;
 		node<T> *current = mHead;
