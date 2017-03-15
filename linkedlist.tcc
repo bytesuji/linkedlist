@@ -174,11 +174,17 @@ public:
 		return this->size();
 	}
 
+	void print()
+	{
+		char letter = 'A';
+		for(int i = 0; i < this->size(); ++i)
+			std::cout << letter++ << "(" << this[0][i]->data << ")->";
+		std::cout << "nullptr\n";
+	}
 };
 
 #endif
 
 /* TODO
-	full list print function
 	getIndex function
 */
