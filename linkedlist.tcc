@@ -181,6 +181,12 @@ public:
 			std::cout << letter++ << "(" << this[0][i]->data << ")->";
 		std::cout << "nullptr\n";
 	}
+
+	void operator+(LinkedList<T> ll, node<T> *n)
+	{
+		ll.append(n);
+	}
+
 };
 
 #endif
