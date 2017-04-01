@@ -159,6 +159,11 @@ public:
 		return mHead;
 	}
 
+	node<T>* head()
+	{
+		return mHead;
+   }
+
 	node<T>* end()
 	{
 		return this[0][mSize - 1];
@@ -182,15 +187,27 @@ public:
 		std::cout << "nullptr\n";
 	}
 
-	void operator+(LinkedList<T> ll, node<T> *n)
+	unsigned linearSearch(T n)
 	{
-		ll.append(n);
-	}
+		node<T> *current = mHead;
+		unsigned index = 0;
+		while(current->data != n)
+		{
+			current = current->next;
+			++index;
+      }
 
+		return index;
+   }
+
+	void operator+(node<T> *n)
+	{
+		this->append(n);
+	}
 };
 
 #endif
 
 /* TODO
-	getIndex function
+	not sure at the moment
 */

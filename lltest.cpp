@@ -62,6 +62,19 @@ int main()
 	cout << endl;
 	ll.print();
 
+	node<int> *t = new node<int>;
+	t->data = 9;
+	ll.append(t);
+
+	node<int> *there_are_too_many_of_these = new node<int>;
+	there_are_too_many_of_these->data = 51;
+	ll.append(there_are_too_many_of_these);
+
+	ll.print();
+	
+	cout << "the node containing 9 is at index " << ll.linearSearch(9) << endl;
+
+
 	cout << "\n/// END TESTS ///\n";
 
 	return 0;
